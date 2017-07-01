@@ -3,8 +3,7 @@ http.createServer(function(req,res) {
   var path = req.url.toLowerCase();
   switch(path) {
     case '/':
-      res.writeHead(404, {'Content-Type': 'text/html'});
-      res.end('Home page');
+      serveStatic(res, '/../public/home.html', 'text/html');
       break;
     case '/about':
       res.writeHead(200, {'Content-Type': 'text/plain'});
