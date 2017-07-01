@@ -23,8 +23,7 @@ http.createServer(function(req,res) {
       serveStatic(res, '/public/home.html', 'text/html');
       break;
     case '/about':
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.end('About page');
+      serveStatic(res, '/package.json', 'text/plain');
       break;
     default:
       res.writeHead(404, {'Content-Type': 'text/plain'});
