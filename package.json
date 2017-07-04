@@ -1,7 +1,9 @@
-{ "name": "churros"
-, "version": "0.1"
-, "repository" :
-    { "type" : "git"
-    , "url" : "https://github.com/mikearchie/.git"
+{
+    "name": "churros",
+    "version": "0.1.1",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mikearchie/.git"
     }
 }
