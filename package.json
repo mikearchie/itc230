@@ -1,1 +1,7 @@
-future json content
+{ "name": "churros"
+, "version": "0.1"
+, "repository" :
+    { "type" : "git"
+    , "url" : "https://github.com/mikearchie/.git"
+    }
+}
