@@ -1,5 +1,8 @@
+'use strict'
 var http = require("http");
 var fs = require('fs');
+var querystring = require('querystring');
+var housing = require("./lib/housing");
 
 function serveStatic(res, path, contentType, responseCode) {
     if(!responseCode) responseCode = 200;
@@ -17,17 +20,38 @@ function serveStatic(res, path, contentType, responseCode) {
 }
 
 http.createServer(function(req,res) {
-  var path = req.url.toLowerCase();
-  switch(path) {
+    let url = req.url.split("?");
+    let params = querystring.parse(url[1]);
+    let path = url[0].toLowerCase();
+    
+    switch(path) {
     case '/':
-      serveStatic(res, '/public/home.html', 'text/html');
-      break;
+        serveStatic(res, '/public/home.html', 'text/html');
+        break;
     case '/about':
-      serveStatic(res, '/package.json', 'text/plain');
-      break;
+        serveStatic(res, '/package.json', 'text/plain');
+        break;
+    case '/get':
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        let result = housing.get(params.name);
+        let resultString = result ? JSON.stringify(result) : "Hotel not found";
+        res.end(resultString);
+        break;
+    case '/getall':
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        let resultString2 = JSON.stringify(housing.getAll());
+        res.end(resultString2);
+        break;
+    case '/delete':
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        let result3 = housing.delete(params.name);
+        let resultString3 = (result3) ? "Deleted: " + JSON.stringify(result3) : "Hotel not found. Nothing deleted.";
+        res.end(resultString3);
+        break;
     default:
-      res.writeHead(404, {'Content-Type': 'text/plain'});
-      res.end('Not found');
-      break;
+        res.writeHead(404, {'Content-Type': 'text/plain'});
+        res.end('Not found');
+        break;
     }
 }).listen(process.env.PORT || 3000);
+
