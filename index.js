@@ -10,7 +10,7 @@ app.use(require("body-parser").urlencoded({extended: true}));
 // var http = require('http');
 // var fs = require('fs');
 // var querystring = require('querystring');
-var housing = require("./lib/housing");
+var housing = require("./lib/hotels");
 
 app.engine(".html", handlebars({extname: '.html'}));
 app.set("view engine", ".html");
