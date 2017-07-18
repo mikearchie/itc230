@@ -23,7 +23,7 @@ http.createServer(function(req,res) {
     let url = req.url.split("?");
     let params = querystring.parse(url[1]);
     let path = url[0].toLowerCase();
-    
+
     switch(path) {
     case '/':
         serveStatic(res, '/public/home.html', 'text/html');
@@ -35,6 +35,7 @@ http.createServer(function(req,res) {
         res.writeHead(200, {'Content-Type': 'text/plain'});
         let result = housing.get(params.name);
         let resultString = result ? JSON.stringify(result) : "Hotel not found";
+        res.write("Searching for " + params.name + '\n');
         res.end(resultString);
         break;
     case '/getall':
@@ -45,7 +46,8 @@ http.createServer(function(req,res) {
     case '/delete':
         res.writeHead(200, {'Content-Type': 'text/plain'});
         let result3 = housing.delete(params.name);
-        let resultString3 = (result3) ? "Deleted: " + JSON.stringify(result3) : "Hotel not found. Nothing deleted.";
+        let resultString3 = ((result3) ? JSON.stringify(result3) + " removed. ": "Hotel not found. Nothing deleted. ") +
+                            housing.count() + " total hotels.";
         res.end(resultString3);
         break;
     default:
@@ -54,4 +56,3 @@ http.createServer(function(req,res) {
         break;
     }
 }).listen(process.env.PORT || 3000);
-
