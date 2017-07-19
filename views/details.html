@@ -6,9 +6,6 @@
     </head>
     <body>
         <a href="/">Home</a>
-{{#each hotels}}
-        <li>{{name}}, {{address}}, {{cost}}</li>
-{{/each}}
 {{#if result}}
         <h2>{{name}} details</h2>
         <li>Name: {{result.name}}</li>
@@ -19,6 +16,14 @@
         </p>
 {{else}}
         <h2>{{name}} not found</h2>
+{{/if}}
+        <h2>Available hotels:</h2>
+{{#if hotels}}
+    {{#each hotels}}
+        <li><a href="/details?name={{name}}">{{name}}</a>, {{address}}, {{cost}}</li>
+    {{/each}}
+{{else}}
+        <p>No hotels available</p>
 {{/if}}
     </body>
 </html>

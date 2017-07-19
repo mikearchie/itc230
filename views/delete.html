@@ -11,6 +11,9 @@
 {{else}}
         <h2>{{name}} was not deleted</h2>
 {{/if}}
-    <p>Hotels remaining: {{count}}</p>
+    <h2>Available hotels: {{count}}</h2>
+{{#each hotels}}
+        <li><a href="/details?name={{name}}">{{name}}</a>, {{address}}, {{cost}}</li>
+{{/each}}
     </body>
 </html>
