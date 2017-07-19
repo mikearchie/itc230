@@ -25,7 +25,8 @@ app.post('/details', function(req,res) {
 
 //process client deletion action using GET
 app.get('/delete', function(req,res) {
-    let nameToDelete = req.param('name');
+    console.log(req.query.name);
+    let nameToDelete = req.query.name;
     let result = hotels.delete(nameToDelete);
     //render results using handlebars template (\view\delete.html)
     //result contains the remainder of the hotels array
