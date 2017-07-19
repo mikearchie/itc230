@@ -15,19 +15,21 @@ app.get('/', function(req, res){
     res.render("home", {hotels: hotels.getAll});
 });
 
-//process client hotel search using POST
+//process client hotel search using POST (e.g. search result)
 app.post('/details', function(req,res) {
-    console.log(req.body.hotelSearchText);
-    let result = hotels.get(req.body.hotelSearchText);
+    let searchName = req.body.hotelSearchText;
+    let result = hotels.get(searchName);
     //render results using handlebars template (\view\details.html)
     //result contains hotel object that was found
-    res.render("details", {name: req.body.hotelSearchText, result: result,
-        hotels: hotels.getAll()});
+    res.render("details", {name: searchName, result: result, hotels: hotels.getAll()});
 });
 
+//process client hotel selection using GET (e.g. clicking a link)
 app.get('/details', function(req,res) {
     let name = req.query.name;
     let result = hotels.get(name);
+    //render results using handlebars template (\view\details.html)
+    //result contains hotel object that was found
     res.render("details", {name: name, result: result, hotels: hotels.getAll()});
 })
 
