@@ -2,24 +2,23 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>ITC230-Hotels Search</title>
-        <!-- <link rel="stylesheet" href="css/laluz.css"> -->
+        <title>ITC230-Hotels</title>
     </head>
     <body>
         <a href="/">Home</a>
 {{#each hotels}}
-    <li>{{name}}, {{address}}, {{cost}}</li>
+        <li>{{name}}, {{address}}, {{cost}}</li>
 {{/each}}
 {{#if result}}
-    <h2>{{name}} details</h2>
-    <li>Name: {{result.name}}</li>
-    <li>Address: {{result.address}}</li>
-    <li>Nightly cost: ${{result.cost}}</li>
-    <p>
-        <a href="/delete?name={{result.name}}">Delete</a>
-    </p>
+        <h2>{{name}} details</h2>
+        <li>Name: {{result.name}}</li>
+        <li>Address: {{result.address}}</li>
+        <li>Nightly cost: ${{result.cost}}</li>
+        <p>
+            <a href="/delete?name={{result.name}}">Delete</a>
+        </p>
 {{else}}
-    <h2>{{name}} not found</h2>
+        <h2>{{name}} not found</h2>
 {{/if}}
     </body>
 </html>

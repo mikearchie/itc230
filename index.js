@@ -1,42 +1,35 @@
 'use strict'
-// var app = include('express');
-var express = require('express');
-var app = express();
-let handlebars = require('express-handlebars');
+const hotels = require("./lib/hotels");
+const express = require('express');
+const app = express();
+const handlebars = require('express-handlebars');
 
 app.use(require("body-parser").urlencoded({extended: true}));
-
-// var path = require('path');
-// var http = require('http');
-// var fs = require('fs');
-// var querystring = require('querystring');
-var hotels = require("./lib/hotels");
-
 app.engine(".html", handlebars({extname: '.html'}));
+//specify that view uses html files only
 app.set("view engine", ".html");
 
-//note: you can specify that views us a file extension other than 'html' if desired
+//home page
 app.get('/', function(req, res){
-    // res.set('Content-Type')
     res.sendFile(__dirname + '/public/home.html');
 });
 
-//The Express render method sends a view in the client response:
-//Express has an ejs
-app.post('/detail', function(req,res) {
-    console.log(req.body);
+//process client hotel search using POST
+app.post('/details', function(req,res) {
     console.log(req.body.hotelSearchText);
     var result = hotels.get(req.body.hotelSearchText);
-    console.log(result);
+    //render results using handlebars template (\view\details.html)
+    //result contains hotel object that was found
     res.render("details", {name: req.body.hotelSearchText, result: result, hotels: hotels.getAll()});
 });
 
-// app.post('/delete', function(req,res) {
-//     // res.writeHead(200, {'Content-Type': 'text/plain'});
-//     // let result1 = hotels.delete(params.name);
-//     // let resultString1 = ((result1) ? JSON.stringify(result1) + " removed. ":
-//     //     "Hotel not found. Nothing deleted. ") + hotels.count() + " total hotels.";
-//     // res.render(resultString1);
-// });
+//process client deletion action using GET
+app.get('/delete', function(req,res) {
+    let nameToDelete = req.param('name');
+    let result = hotels.delete(nameToDelete);
+    //render results using handlebars template (\view\delete.html)
+    //result contains the remainder of the hotels array
+    res.render("delete", {name: nameToDelete, result: result, count: hotels.count()});
+});
 
 app.listen(3000);
