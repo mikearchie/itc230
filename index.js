@@ -35,7 +35,6 @@ app.get('/details', function(req,res) {
 
 //process client deletion action using GET
 app.get('/delete', function(req,res) {
-    console.log(req.query.name);
     let nameToDelete = req.query.name;
     let result = hotels.delete(nameToDelete);
     //render results using handlebars template (\view\delete.html)
