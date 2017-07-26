@@ -1,8 +1,5 @@
-// Then create a test script file in your /test folder,
-// with Mocha+Chai test cases for your 'get', 'add' and 'delete' data methods.
-// For each method, provide tests for both success & failure conditions.
-// All six test cases should pass when run via Mocha.
-
+//hotelsTest.js
+//This is a mocha file for testing '../lib/hotels.js'
 var expect = require("chai").expect;
 var hotels = require("../lib/hotels.js");
 
@@ -32,6 +29,7 @@ describe('Hotels module', () => {
         let preCount = hotels.count();
         let result = hotels.delete("Peaks");
         let postDiff = preCount - hotels.count();
+        //since new count should be one less than preCount, postDiff should = 1
         expect(postDiff).to.equal(1);
         expect(result).to.not.be.false;
 
