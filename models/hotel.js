@@ -30,6 +30,6 @@ let hotelSchema = mongoose.Schema({
 });
 
 let hotelModel = mongoose.model('Hotel', hotelSchema);
-module.exports = hotelModel
+module.exports = hotelModel;
 //this can be merged to:
 //module.exports = mongoose.model('Book', bookSchema);
