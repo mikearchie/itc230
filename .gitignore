@@ -1,3 +1,3 @@
 # dependencies folder
 node_modules/
-lib/credentials
+lib/credentials.js
