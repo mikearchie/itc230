@@ -59,10 +59,15 @@ app.get('/delete', function(req,res) {
     // let result = hotels.delete(nameToDelete);
 
     //render results using handlebars template (\view\delete.html)
-    //result contains the remainder of the hotels array
-
-    res.render("delete", {name: nameToDelete, result: result,
-        hotels: hotels.getAll(), count: hotels.count()});
+    //result contains deleted hotel. items contains the remaining docs in collection
+    Hotel.findOneAndRemove({name: nameToDelete}, function(err, hotel) {
+        Hotel.find(function(err,items) {
+            res.render("delete", {name: nameToDelete, result: hotel,
+                hotels: items, count: items.length});
+        });
+    });
+    // res.render("delete", {name: nameToDelete, result: result,
+    //     hotels: hotels.getAll(), count: hotels.count()});
 });
 
 app.listen(3000);
