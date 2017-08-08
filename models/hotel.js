@@ -15,9 +15,12 @@ let options = {
 // // mongoose.connect('mongodb://' +ip+ '/<DB_NAME>');
 //
 // var conn = mongoose.connection;
-let conn = mongoose.createConnection(credentials, options);
+// let conn = mongoose.createConnection(credentials, options);
+mongoose.connect(credentials, options);
+let conn = mongoose.connection;
 conn.on('error', console.error.bind(console, 'connection error:'));
 
+mongoose.Promise = require('bluebird');
 // define Book model in JSON key/value pairs
 // values indicate the data type of each key
 //you can also type: let mySchema = new mongoose.Schema(options);
@@ -33,3 +36,16 @@ let hotelModel = mongoose.model('Hotel', hotelSchema);
 module.exports = hotelModel;
 //this can be merged to:
 //module.exports = mongoose.model('Book', bookSchema);
+
+//I used the following code to "manually" add documents to collection (two ways)
+// let hotelDocument = new Hotel({name: "The Yarrow", address: "1800 Park Ave, Park City, UT", cost: 150});
+// // hotelDocument.save();
+// hotelDocument.save(function (err) {
+//      if (err) console.log('Unable to add hotel document');
+// });
+// let hotels = [
+//     {name: "The Yarrow", address: "1800 Park Ave, Park City, UT", cost: 150},
+//     {name: "Washington School House", address: "543 Park Ave, Park City, UT", cost: 400},
+//     {name: "Peaks", address: "2346 Park Avenue, Park City, UT", cost: 150}
+// ];
+// hotelModel.insertMany(hotels, function(err, docs) {});
