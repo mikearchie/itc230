@@ -27,27 +27,29 @@ app.get('/', function(req, res) {
 app.post('/details', function(req,res) {
     let searchName = req.body.hotelSearchText;
     // let result = hotels.get(searchName);
-    Hotel.find({name: searchName}, function(err, item) {
+    Hotel.find({name: searchName}, function(err, result) {
         Hotel.find(function(err,items) {
-            res.render("details", {name: searchName, result: item[0], hotels: items});
+            //render results using handlebars template (\view\details.html)
+            //result contains hotel object that was found
+            res.render("details", {name: searchName, result: result[0], hotels: items});
         });
-
     });
-    // let result =
-    // //render results using handlebars template (\view\details.html)
-    // //result contains hotel object that was found
     // res.render("details", {name: searchName, result: result, hotels: hotels.getAll()});
 });
 
-// //process client hotel selection using GET (e.g. clicking a link)
-// app.get('/details', function(req,res) {
-//     let name = req.query.name;
-//     let result = hotels.get(name);
-//     //render results using handlebars template (\view\details.html)
-//     //result contains hotel object that was found
-//     res.render("details", {name: name, result: result, hotels: hotels.getAll()});
-// })
-//
+//process client hotel selection using GET (e.g. clicking a link)
+app.get('/details', function(req,res) {
+    let queryName = req.query.name;
+    // let result = hotels.get(name);
+    //render results using handlebars template (\view\details.html)
+    //result contains hotel object that was found
+    Hotel.find({name: queryName}, function(err, result) {
+        Hotel.find(function(err,items) {
+            res.render("details", {name: queryName, result: result[0], hotels: items});
+        });
+    });
+});
+
 // //process client deletion action using GET
 // app.get('/delete', function(req,res) {
 //     let nameToDelete = req.query.name;
