@@ -36,8 +36,9 @@ let hotelModel = mongoose.model('Hotel', hotelSchema);
 module.exports = hotelModel;
 
 // un-comment the following lines to re-add all 3 default hotel documents
+// let yarrowConstDate = new Date(8000);
 // let hotels = [
-//     {name: "The Yarrow", address: "1800 Park Ave, Park City, UT", cost: 150},
+//     {name: "The Yarrow", address: "1800 Park Ave, Park City, UT", cost: 150, luxuryFlag: 1, constructionDate: yarrowConstDate},
 //     {name: "Washington School House", address: "543 Park Ave, Park City, UT", cost: 400},
 //     {name: "Peaks", address: "2346 Park Avenue, Park City, UT", cost: 150}
 // ];
