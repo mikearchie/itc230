@@ -1,5 +1,6 @@
 'use strict';
 module.exports = (app, Hotel) => {
+    app.use('/api', require('cors')()); // set Access-Control-Allow-Origin header for api route
     //home page
     app.get('/', (req, res) => {
         // res.sendFile(__dirname + '/public/home.html');
@@ -129,8 +130,8 @@ module.exports = (app, Hotel) => {
         });
         savePromise.then(resolveResult => {
             //resolved
-            // res.status(200).json(resolveResult);
             res.json(resolveResult);
         });
     });
+
 };
