@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>ITC230-Hotels</title>
+    </head>
+    <body>
+
+        <div id='root'></div>
+        <script type="text/babel">
+            class HotelApp extends React.Component {
+                constructor(props) {
+                    super(props);
+                    this.state = {
+                        hotels: {{{hotels}}},
+                        currItem: {},
+                        filter: ""
+                   };
+
+                   this.onSearchChange = this.onSearchChange.bind(this);
+               };
+
+
+                render() {
+                    return (
+                        <div>
+                            <Title title="Hotel Options" />
+                            <ItemList items={this.state.hotels} clickProp={this.showHotel}/>
+                            <SearchForm filterProp={this.state.filter} changeProp={this.onSearchChange}/>
+                            <SearchMirror filterPropMirror={this.state.filter}/>
+                        </div>
+
+                    );
+                }
+
+                onSearchChange(event) {
+                    this.setState({filter: event.target.value.toLowerCase() });
+                }
+            }
+
+            const SearchForm = (props) => {
+                return (
+                    <div>
+                        <label>Search for a hotel:</label>
+                        <input name="searchNameInput" type="text"
+                            value={props.filterProp}
+                            onChange={props.changeProp}
+                        />
+                    </div>);
+            };
+
+            const Title = ({title}) => {
+                return (
+                   <div><h2>{title}</h2></div>
+                );
+            }
+            const SearchMirror = (props) => {
+                return <div><h3>You are currently searching for:</h3><p>{props.filterPropMirror}</p></div>;
+            }
+
+            const ItemList = (props) => {
+                const itemNodes = props.items.map((item) => {
+                    return <li key={props.item._id}>{props.item.name}</li>;
+                });
+                return <ul>{itemNodes}</ul>;
+            };
+
+            const ItemEditor = (props) => {
+                let hotel = props.item;
+                return (<div>
+                    <h3>Current Item</h3>
+                    <form> //onChange={props.change}>
+                        <input type="text" name="name" value={hotel.name}/>
+                        <input type="text" name="address" value={hotel.address}/>
+                        <input type="checkbox" name="luxury" value={hotel.luxuryFlag}/>
+                    </form>
+                    </div>);
+            };
+
+            ReactDOM.render(<HotelApp/>, document.getElementById('root'));
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react-dom.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+    </body>
+</html>

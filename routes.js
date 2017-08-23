@@ -9,7 +9,7 @@ module.exports = (app, Hotel) => {
                 console.log('error finding item(s): ' + err);
                 return next(err);
             }
-            res.render("home", {hotels : items});
+            res.render("homeSPA", {hotels : JSON.stringify(items)});
             console.log('Total documents in Hotel collection: ' + items.length);
         });
     });
