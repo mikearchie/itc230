@@ -18,6 +18,8 @@
                    };
 
                    this.onSearchChange = this.onSearchChange.bind(this);
+                   this.clickItem = this.clickItem.bind(this);
+                   this.onEditorChange = this.onEditorChange.bind(this);
                };
 
 
@@ -26,17 +28,36 @@
                         <div>
                             <Title title="Hotel Options" />
                             <ItemList items={this.state.hotels}
-                                clickProp={this.showHotel}
-                                filterProp={this.state.filter}/>
-                            <SearchForm filterProp={this.state.filter} changeProp={this.onSearchChange}/>
+                                filterProp={this.state.filter}
+                                clickProp={this.clickItem}/>
+                            <SearchForm filterProp={this.state.filter}
+                                changeProp={this.onSearchChange}/>
                             <SearchMirror filterPropMirror={this.state.filter}/>
+                            <ItemEditor item={this.state.currItem}
+                                changeProp={this.onEditorChange}/>
+
+
                         </div>
 
                     );
                 }
 
+                onEditorChange(event) {
+                    let hotel = this.state.currItem;
+                    hotel[event.target.key] = event.target.value;
+                    this.setState({currItem: hotel});
+                }
+
                 onSearchChange(event) {
                     this.setState({filter: event.target.value.toLowerCase() });
+                }
+
+                clickItem(event) {
+                    console.log("id clicked: " + event.target.id);
+                    let itemToShow = this.state.hotels.find((hotel) => {
+                        return (hotel._id == event.target.id);
+                    });
+                    this.setState({currItem: itemToShow});
                 }
             }
 
@@ -63,7 +84,7 @@
             const ItemList = (props) => {
                 const itemNodes = props.items.map((item) => {
                     if (item.name.toLowerCase().indexOf(props.filterProp) >= 0)
-                        return <li key={item._id}>{item.name}</li>;
+                        return <li key={item._id} id={item._id} onClick={props.clickProp}>{item.name}</li>;
                 });
                 return <ul>{itemNodes}</ul>;
             };
@@ -72,13 +93,15 @@
                 let hotel = props.item;
                 return (<div>
                     <h3>Current Item</h3>
-                    <form> //onChange={props.change}>
-                        <input type="text" name="name" value={hotel.name}/>
-                        <input type="text" name="address" value={hotel.address}/>
-                        <input type="checkbox" name="luxury" value={hotel.luxuryFlag}/>
+                    <form>
+                        <input type="text" key="name" value={hotel.name}/>
+                        <input type="text" key="address" value={hotel.address}/>
+                        <input type="checkbox" key="luxury" value={hotel.luxuryFlag}/>
                     </form>
                     </div>);
             };
+
+
 
             ReactDOM.render(<HotelApp/>, document.getElementById('root'));
         </script>
