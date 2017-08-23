@@ -22,6 +22,7 @@
                    this.onEditorChange = this.onEditorChange.bind(this);
                    this.onDeleteClick = this.onDeleteClick.bind(this);
                    this.onSaveClick = this.onSaveClick.bind(this);
+                   this.onClearClick = this.onClearClick.bind(this);
                };
 
 
@@ -47,28 +48,29 @@
                 }
 
                 onClearClick(event) {
-
+                    this.setState({currItem: {}});
                 }
 
                 onSaveClick(event) {
-                    // let itemToSave = this.state.hotels.find((hotel) => {
-                    //     return (hotel._id == this.state.currItem._id);
-                    // });
-                    // if (itemToSave) {
-                    //     //itemToSave already exists in db
-                    // } else {
-                    //     //new hotel, so add to db
-                    if (!this.state.currItem._id)
-                        fetch('/api/v1/hotels/add/' + this.state.currItem.name + '.' + this.state.currItem.address
-                            + '.' + this.state.currItem.cost + '.1.1').then((response) => {
-                            return response.json();
+                    //if item is not an existing document in collection, add a
+                    //new document
+                    if (!this.state.currItem._id && this.state.currItem.name) {
+                        fetch('/api/v1/hotels/add/' + this.state.currItem.name + '.' + this.state.currItem.address + '.' + this.state.currItem.cost + '.0.0').then((response) => {
+                                return response.json();
                         }).then((results) => {
                             //add newly created hotel to item list
                             var hotelsArray = this.state.hotels.slice()
                             hotelsArray.push(results);
-                            this.setState({ hotels: hotelsArray })
+                            this.setState({ hotels: hotelsArray });
                         });
-                    // }
+                    } else {
+                        //save updated data to existing document
+                        let updatedHotels = this.state.hotels.map((hotel) => {
+                            if (hotel._id === this.state.currItem._id)
+                                hotel = this.state.currItem;
+                            return hotel;
+                        });
+                    }
                 }
 
                 onDeleteClick(event) {
