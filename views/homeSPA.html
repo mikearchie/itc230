@@ -20,6 +20,7 @@
                    this.onSearchChange = this.onSearchChange.bind(this);
                    this.clickItem = this.clickItem.bind(this);
                    this.onEditorChange = this.onEditorChange.bind(this);
+                   this.onDeleteClick = this.onDeleteClick.bind(this);
                };
 
 
@@ -35,10 +36,37 @@
                             <SearchMirror filterPropMirror={this.state.filter}/>
                             <ItemEditor item={this.state.currItem}
                                 editorChangeProp={this.onEditorChange}
+                                onSave={this.onSaveClick}
+                                onReset={this.onResetClick}
+                                onDelete={this.onDeleteClick}
                                 />
                         </div>
 
                     );
+                }
+
+                onSaveClick(event) {
+
+                }
+
+                onDeleteClick(event) {
+                    console.log("currItem _id: " + this.state.currItem._id);
+                    let itemToDelete = this.state.hotels.find((hotel) => {
+                        console.log("hotelID: " + hotel._id);
+                        return (hotel._id == this.state.currItem._id);
+                    });
+                    if (itemToDelete) {
+                        fetch("/api/v1/hotels/delete/" + itemToDelete.name).then((response) => {
+                            return response.json();
+                        }).then((results) => {
+                            // Filter all items except the one to be removed
+                            let remainingHotels = this.state.hotels.filter((hotel) => {
+                                return hotel._id !== itemToDelete._id;
+                            });
+                            //refresh list
+                            this.setState({hotels: remainingHotels, currItem: {}});
+                        });
+                    }
                 }
 
                 onEditorChange(event) {
@@ -55,7 +83,6 @@
                 }
 
                 clickItem(event) {
-                    console.log("id clicked: " + event.target.id);
                     let itemToShow = this.state.hotels.find((hotel) => {
                         return (hotel._id == event.target.id);
                     });
@@ -89,6 +116,8 @@
                         <input type="text" name="address" value={props.item.address || ""}/><br/>
                         <input type="text" name="cost" value={props.item.cost || ""}/><br/>
                     </form>
+                    <button onClick={props.onSave}>Save</button>
+                    <button onClick={props.onDelete}>Delete</button>
                     </div>);
             };
 
