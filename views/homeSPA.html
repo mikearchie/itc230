@@ -34,17 +34,19 @@
                                 changeProp={this.onSearchChange}/>
                             <SearchMirror filterPropMirror={this.state.filter}/>
                             <ItemEditor item={this.state.currItem}
-                                changeProp={this.onEditorChange}/>
-
-
+                                editorChangeProp={this.onEditorChange}
+                                />
                         </div>
 
                     );
                 }
 
                 onEditorChange(event) {
+                    console.log("here is curritem name: " + this.state.currItem);
                     let hotel = this.state.currItem;
-                    hotel[event.target.key] = event.target.value;
+
+                    hotel[event.target.name] = event.target.value;
+                    console.log(hotel);
                     this.setState({currItem: hotel});
                 }
 
@@ -59,18 +61,8 @@
                     });
                     this.setState({currItem: itemToShow});
                 }
-            }
 
-            const SearchForm = (props) => {
-                return (
-                    <div>
-                        <label>Search for a hotel:</label>
-                        <input name="searchNameInput" type="text"
-                            value={props.filterProp}
-                            onChange={props.changeProp}
-                        />
-                    </div>);
-            };
+            }
 
             const Title = ({title}) => {
                 return (
@@ -90,14 +82,24 @@
             };
 
             const ItemEditor = (props) => {
-                let hotel = props.item;
                 return (<div>
                     <h3>Current Item</h3>
-                    <form>
-                        <input type="text" key="name" value={hotel.name}/>
-                        <input type="text" key="address" value={hotel.address}/>
-                        <input type="checkbox" key="luxury" value={hotel.luxuryFlag}/>
+                    <form onChange={props.editorChangeProp}>
+                        <input type="text" name="name" value={props.item.name || ""}/><br/>
+                        <input type="text" name="address" value={props.item.address || ""}/><br/>
+                        <input type="text" name="cost" value={props.item.cost || ""}/><br/>
                     </form>
+                    </div>);
+            };
+
+            const SearchForm = (props) => {
+                return (
+                    <div>
+                        <label>Search for a hotel:</label>
+                        <input name="searchNameInput" type="text"
+                            value={props.filterProp}
+                            onChange={props.changeProp}
+                        />
                     </div>);
             };
 
