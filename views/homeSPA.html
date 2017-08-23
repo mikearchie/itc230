@@ -25,7 +25,9 @@
                     return (
                         <div>
                             <Title title="Hotel Options" />
-                            <ItemList items={this.state.hotels} clickProp={this.showHotel}/>
+                            <ItemList items={this.state.hotels}
+                                clickProp={this.showHotel}
+                                filterProp={this.state.filter}/>
                             <SearchForm filterProp={this.state.filter} changeProp={this.onSearchChange}/>
                             <SearchMirror filterPropMirror={this.state.filter}/>
                         </div>
@@ -55,12 +57,13 @@
                 );
             }
             const SearchMirror = (props) => {
-                return <div><h3>You are currently searching for:</h3><p>{props.filterPropMirror}</p></div>;
+                return <div><h3>You are currently searching for: {props.filterPropMirror}</h3></div>;
             }
 
             const ItemList = (props) => {
                 const itemNodes = props.items.map((item) => {
-                    return <li key={props.item._id}>{props.item.name}</li>;
+                    if (item.name.toLowerCase().indexOf(props.filterProp) >= 0)
+                        return <li key={item._id}>{item.name}</li>;
                 });
                 return <ul>{itemNodes}</ul>;
             };
