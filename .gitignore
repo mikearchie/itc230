@@ -1,3 +1,4 @@
 # dependencies folder
 node_modules/
 lib/credentials.js
+scratchpad.js
