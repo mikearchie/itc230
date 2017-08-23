@@ -21,6 +21,7 @@
                    this.clickItem = this.clickItem.bind(this);
                    this.onEditorChange = this.onEditorChange.bind(this);
                    this.onDeleteClick = this.onDeleteClick.bind(this);
+                   this.onSaveClick = this.onSaveClick.bind(this);
                };
 
 
@@ -37,7 +38,7 @@
                             <ItemEditor item={this.state.currItem}
                                 editorChangeProp={this.onEditorChange}
                                 onSave={this.onSaveClick}
-                                onReset={this.onResetClick}
+                                onClear={this.onClearClick}
                                 onDelete={this.onDeleteClick}
                                 />
                         </div>
@@ -45,14 +46,33 @@
                     );
                 }
 
-                onSaveClick(event) {
+                onClearClick(event) {
 
                 }
 
+                onSaveClick(event) {
+                    // let itemToSave = this.state.hotels.find((hotel) => {
+                    //     return (hotel._id == this.state.currItem._id);
+                    // });
+                    // if (itemToSave) {
+                    //     //itemToSave already exists in db
+                    // } else {
+                    //     //new hotel, so add to db
+                    if (!this.state.currItem._id)
+                        fetch('/api/v1/hotels/add/' + this.state.currItem.name + '.' + this.state.currItem.address
+                            + '.' + this.state.currItem.cost + '.1.1').then((response) => {
+                            return response.json();
+                        }).then((results) => {
+                            //add newly created hotel to item list
+                            var hotelsArray = this.state.hotels.slice()
+                            hotelsArray.push(results);
+                            this.setState({ hotels: hotelsArray })
+                        });
+                    // }
+                }
+
                 onDeleteClick(event) {
-                    console.log("currItem _id: " + this.state.currItem._id);
                     let itemToDelete = this.state.hotels.find((hotel) => {
-                        console.log("hotelID: " + hotel._id);
                         return (hotel._id == this.state.currItem._id);
                     });
                     if (itemToDelete) {
@@ -118,6 +138,7 @@
                     </form>
                     <button onClick={props.onSave}>Save</button>
                     <button onClick={props.onDelete}>Delete</button>
+                    <button onClick={props.onClear}>Clear</button>
                     </div>);
             };
 
